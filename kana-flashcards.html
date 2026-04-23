@@ -85,6 +85,7 @@
   .pill.active-alldiac{ background: var(--peach);     border-color: #f0a060; }
   .pill.active-char   { background: var(--yellow);    border-color: #e0c040; }
   .pill.active-rom    { background: var(--pink);      border-color: var(--pink2); }
+  .pill.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
   .divider { width: 2px; background: #e8d8e8; border-radius: 4px; align-self: stretch; margin: 0 2px; }
 
   /* ─── STAGE ─── */
@@ -160,14 +161,16 @@
     border-collapse: separate;
     border-spacing: 4px;
   }
-  .col-header {
+  .col-header { display: none; }
+  .col-header-UNUSED {
     font-family: 'Nunito', sans-serif;
     font-size: 0.65rem; font-weight: 800;
     text-transform: uppercase; letter-spacing: 1px;
     color: var(--muted); text-align: center;
     padding: 0 0 4px;
   }
-  .row-header {
+  .row-header { display: none; }
+  .row-header-UNUSED {
     font-family: 'Nunito', sans-serif;
     font-size: 0.6rem; font-weight: 800;
     color: var(--muted); text-align: right;
@@ -438,10 +441,11 @@ function restart() { queue = buildQueue(); currentIdx = 0; render(); }
 
 // ─── SETTINGS PILLS ─────────────────────────────────────
 document.getElementById('scriptGroup').addEventListener('click', e => {
-  const btn = e.target.closest('[data-script]'); if (!btn) return;
+  const btn = e.target.closest('[data-script]'); if (!btn || btn.classList.contains('disabled')) return;
   settings.script = btn.dataset.script;
   document.querySelectorAll('[data-script]').forEach(b =>
     b.className = 'pill' + (b.dataset.script===settings.script ? ` active-${settings.script}` : ''));
+  updateBothPill();
   restart();
 });
 document.getElementById('diacGroup').addEventListener('click', e => {
@@ -452,9 +456,24 @@ document.getElementById('diacGroup').addEventListener('click', e => {
     b.className = 'pill' + (b.dataset.diac===settings.diac ? ` active-${map[settings.diac]}` : ''));
   restart();
 });
+function updateBothPill() {
+  const bothBtn = document.querySelector('[data-script="both"]');
+  if (settings.mode === 'rom') {
+    bothBtn.classList.add('disabled');
+    if (settings.script === 'both') {
+      settings.script = 'hira';
+      document.querySelectorAll('[data-script]').forEach(b =>
+        b.className = 'pill' + (b.dataset.script===settings.script ? ' active-hira' : ''));
+      bothBtn.classList.add('disabled');
+    }
+  } else {
+    bothBtn.classList.remove('disabled');
+  }
+}
 document.getElementById('modeGroup').addEventListener('click', e => {
   const btn = e.target.closest('[data-mode]'); if (!btn) return;
   settings.mode = btn.dataset.mode;
+  updateBothPill();
   document.querySelectorAll('[data-mode]').forEach(b =>
     b.className = 'pill' + (b.dataset.mode===settings.mode ? ` active-${settings.mode}` : ''));
   restart();
