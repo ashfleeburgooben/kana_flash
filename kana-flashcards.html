@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>かな Flash ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink:    #ffb3c6;
+    --pink2:   #ff85a1;
+    --peach:   #ffd6a5;
+    --mint:    #b5ead7;
+    --mint2:   #6fcf97;
+    --lavender:#c9b8f5;
+    --sky:     #a8d8ea;
+    --yellow:  #fff3b0;
+    --bg:      #fff8f5;
+    --text:    #3a2a3a;
+    --muted:   #b09fb0;
+    --shadow:  rgba(180,130,160,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 20%, #ffd6a530 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, #c9b8f530 0%, transparent 45%),
+      radial-gradient(circle at 50% 90%, #b5ead730 0%, transparent 40%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  header {
+    width: 100%;
+    padding: 16px 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff85a1, #b07fe0, #6fcf97);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── SETTINGS ─── */
+  .settings {
+    width: 100%;
+    max-width: 720px;
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .pill-group { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .pill {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 2.5px solid transparent;
+    background: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 2px 8px var(--shadow);
+    color: var(--text);
+  }
+  .pill:hover { transform: translateY(-1px); }
+  .pill.active-hira   { background: var(--pink);     border-color: var(--pink2); }
+  .pill.active-kata   { background: var(--lavender);  border-color: #a07fe0; }
+  .pill.active-both   { background: var(--peach);     border-color: #f0a060; }
+  .pill.active-nodiac { background: var(--mint);      border-color: var(--mint2); }
+  .pill.active-diac   { background: var(--sky);       border-color: #60afe0; }
+  .pill.active-alldiac{ background: var(--peach);     border-color: #f0a060; }
+  .pill.active-char   { background: var(--yellow);    border-color: #e0c040; }
+  .pill.active-rom    { background: var(--pink);      border-color: var(--pink2); }
+  .divider { width: 2px; background: #e8d8e8; border-radius: 4px; align-self: stretch; margin: 0 2px; }
+
+  /* ─── STAGE ─── */
+  .stage {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    padding: 0 12px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* ─── PROMPT CARD ─── */
+  .prompt-card {
+    width: 100%;
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 8px 32px var(--shadow);
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .prompt-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--pink), var(--lavender), var(--mint));
+  }
+  .prompt-label {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
+  }
+  .prompt-char {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(3rem, 14vw, 6rem);
+    font-weight: 900; line-height: 1.1; color: var(--text);
+  }
+  .prompt-char.is-romaji {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2.2rem, 9vw, 4.5rem);
+    letter-spacing: -1px;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    15% { transform: translateX(-10px) rotate(-2deg); }
+    30% { transform: translateX(10px) rotate(2deg); }
+    45% { transform: translateX(-8px); }
+    60% { transform: translateX(8px); }
+    75% { transform: translateX(-4px); }
+    90% { transform: translateX(4px); }
+  }
+  .shake { animation: shake 0.5s ease; }
+
+  @keyframes popIn {
+    0%  { opacity:0; transform: scale(0.7); }
+    70% { transform: scale(1.08); }
+    100%{ opacity:1; transform: scale(1); }
+  }
+  .pop-in { animation: popIn 0.35s cubic-bezier(.34,1.56,.64,1) both; }
+
+  /* ─── GOJŪON GRID ─── */
+  .grid-wrap { width: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  .gojiuon-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+  }
+  .col-header {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.65rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); text-align: center;
+    padding: 0 0 4px;
+  }
+  .row-header {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.6rem; font-weight: 800;
+    color: var(--muted); text-align: right;
+    padding-right: 3px; white-space: nowrap;
+    vertical-align: middle; width: 18px;
+  }
+  .diac-sep td { padding: 3px 0; }
+  .diac-sep-line {
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink), var(--lavender), var(--mint));
+    border-radius: 99px; opacity: 0.5;
+  }
+
+  .ans-btn {
+    width: 100%;
+    background: white;
+    border: 2.5px solid #f0e0f0;
+    border-radius: 11px;
+    padding: 5px 1px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 2px 7px var(--shadow);
+    min-height: 46px;
+    display: block; text-align: center; line-height: 1.2;
+  }
+  .ans-btn.romaji-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem;
+  }
+  .ans-btn:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 5px 14px var(--shadow); border-color: var(--pink2); }
+  .ans-btn:active:not([disabled]) { transform: scale(0.93); }
+  .ans-btn.correct {
+    background: var(--mint); border-color: var(--mint2);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(111,207,151,0.4);
+  }
+  .ans-btn.wrong {
+    background: #ffe0e8; border-color: #ff85a1;
+    opacity: 0.38; pointer-events: none;
+  }
+  .ans-empty {
+    display: block; width: 100%; min-height: 44px;
+    background: transparent;
+    border: 2px dashed #ecdcec;
+    border-radius: 11px;
+  }
+
+  /* ─── PROGRESS ─── */
+  .progress-bar-wrap { width: 100%; height: 8px; background: #f0e0f0; border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink2), var(--lavender)); border-radius: 99px; transition: width 0.4s ease; }
+  .progress-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); align-self: flex-end; }
+
+  /* ─── COMPLETE ─── */
+  .complete-screen { display:flex; flex-direction:column; align-items:center; gap:16px; padding:40px 20px; text-align:center; }
+  .complete-emoji { font-size: 4rem; }
+  .complete-title { font-size: 1.8rem; font-weight: 900; }
+  .complete-sub   { color: var(--muted); font-weight: 600; }
+  .restart-btn {
+    margin-top:12px; padding:14px 36px;
+    border-radius:999px; border:none;
+    background: linear-gradient(135deg, var(--pink2), var(--lavender));
+    color:white; font-family:'Nunito',sans-serif;
+    font-size:1.05rem; font-weight:800;
+    cursor:pointer;
+    box-shadow:0 4px 16px rgba(180,130,200,0.35);
+    transition:all 0.18s;
+  }
+  .restart-btn:hover { transform:translateY(-2px); }
+  .empty { text-align:center; color:var(--muted); padding:40px 20px; font-size:1rem; font-weight:600; }
+</style>
+</head>
+<body>
+
+<header><div class="title">かな Flash ✨</div></header>
+
+<div class="settings">
+  <div class="pill-group" id="scriptGroup">
+    <button class="pill active-hira" data-script="hira">ひ Hiragana</button>
+    <button class="pill" data-script="kata">カ Katakana</button>
+    <button class="pill" data-script="both">Both</button>
+  </div>
+  <div class="divider"></div>
+  <div class="pill-group" id="diacGroup">
+    <button class="pill active-nodiac" data-diac="none">No diacritics</button>
+    <button class="pill" data-diac="diac">With diacritics</button>
+    <button class="pill" data-diac="all">All</button>
+  </div>
+  <div class="divider"></div>
+  <div class="pill-group" id="modeGroup">
+    <button class="pill active-char" data-mode="char">Show kana</button>
+    <button class="pill" data-mode="rom">Show romaji</button>
+  </div>
+</div>
+
+<div class="stage" id="stage"></div>
+
+<script>
+// ─── GOJŪON DATA ────────────────────────────────────────
+// 5 slots per row: [a, i, u, e, o]. null = vacant position.
+const GOJIUON_BASE = [
+  {lbl:'—', e:[{h:'あ',k:'ア',r:'a'},{h:'い',k:'イ',r:'i'},{h:'う',k:'ウ',r:'u'},{h:'え',k:'エ',r:'e'},{h:'お',k:'オ',r:'o'}]},
+  {lbl:'k',  e:[{h:'か',k:'カ',r:'ka'},{h:'き',k:'キ',r:'ki'},{h:'く',k:'ク',r:'ku'},{h:'け',k:'ケ',r:'ke'},{h:'こ',k:'コ',r:'ko'}]},
+  {lbl:'s',  e:[{h:'さ',k:'サ',r:'sa'},{h:'し',k:'シ',r:'shi'},{h:'す',k:'ス',r:'su'},{h:'せ',k:'セ',r:'se'},{h:'そ',k:'ソ',r:'so'}]},
+  {lbl:'t',  e:[{h:'た',k:'タ',r:'ta'},{h:'ち',k:'チ',r:'chi'},{h:'つ',k:'ツ',r:'tsu'},{h:'て',k:'テ',r:'te'},{h:'と',k:'ト',r:'to'}]},
+  {lbl:'n',  e:[{h:'な',k:'ナ',r:'na'},{h:'に',k:'ニ',r:'ni'},{h:'ぬ',k:'ヌ',r:'nu'},{h:'ね',k:'ネ',r:'ne'},{h:'の',k:'ノ',r:'no'}]},
+  {lbl:'h',  e:[{h:'は',k:'ハ',r:'ha'},{h:'ひ',k:'ヒ',r:'hi'},{h:'ふ',k:'フ',r:'fu'},{h:'へ',k:'ヘ',r:'he'},{h:'ほ',k:'ホ',r:'ho'}]},
+  {lbl:'m',  e:[{h:'ま',k:'マ',r:'ma'},{h:'み',k:'ミ',r:'mi'},{h:'む',k:'ム',r:'mu'},{h:'め',k:'メ',r:'me'},{h:'も',k:'モ',r:'mo'}]},
+  {lbl:'y',  e:[{h:'や',k:'ヤ',r:'ya'},null,{h:'ゆ',k:'ユ',r:'yu'},null,{h:'よ',k:'ヨ',r:'yo'}]},
+  {lbl:'r',  e:[{h:'ら',k:'ラ',r:'ra'},{h:'り',k:'リ',r:'ri'},{h:'る',k:'ル',r:'ru'},{h:'れ',k:'レ',r:'re'},{h:'ろ',k:'ロ',r:'ro'}]},
+  {lbl:'w',  e:[{h:'わ',k:'ワ',r:'wa'},null,null,null,{h:'を',k:'ヲ',r:'wo'}]},
+  {lbl:'n',  e:[{h:'ん',k:'ン',r:'n'},null,null,null,null]},
+];
+const GOJIUON_DIAC = [
+  {lbl:'g', e:[{h:'が',k:'ガ',r:'ga'},{h:'ぎ',k:'ギ',r:'gi'},{h:'ぐ',k:'グ',r:'gu'},{h:'げ',k:'ゲ',r:'ge'},{h:'ご',k:'ゴ',r:'go'}]},
+  {lbl:'z', e:[{h:'ざ',k:'ザ',r:'za'},{h:'じ',k:'ジ',r:'ji'},{h:'ず',k:'ズ',r:'zu'},{h:'ぜ',k:'ゼ',r:'ze'},{h:'ぞ',k:'ゾ',r:'zo'}]},
+  {lbl:'d', e:[{h:'だ',k:'ダ',r:'da'},{h:'ぢ',k:'ヂ',r:'di'},{h:'づ',k:'ヅ',r:'du'},{h:'で',k:'デ',r:'de'},{h:'ど',k:'ド',r:'do'}]},
+  {lbl:'b', e:[{h:'ば',k:'バ',r:'ba'},{h:'び',k:'ビ',r:'bi'},{h:'ぶ',k:'ブ',r:'bu'},{h:'べ',k:'ベ',r:'be'},{h:'ぼ',k:'ボ',r:'bo'}]},
+  {lbl:'p', e:[{h:'ぱ',k:'パ',r:'pa'},{h:'ぴ',k:'ピ',r:'pi'},{h:'ぷ',k:'プ',r:'pu'},{h:'ぺ',k:'ペ',r:'pe'},{h:'ぽ',k:'ポ',r:'po'}]},
+];
+
+function flatEntries(rows) { return rows.flatMap(r => r.e.filter(Boolean)); }
+
+// ─── STATE ──────────────────────────────────────────────
+let settings = { script:'hira', diac:'none', mode:'char' };
+let queue = [], currentIdx = 0, currentEntry = null, answered = false;
+
+function getRows() {
+  if (settings.diac === 'none') return { base: GOJIUON_BASE, diac: [] };
+  if (settings.diac === 'diac') return { base: [], diac: GOJIUON_DIAC };
+  return { base: GOJIUON_BASE, diac: GOJIUON_DIAC };
+}
+
+function buildQueue() {
+  const { base, diac } = getRows();
+  const all = [...flatEntries(base), ...flatEntries(diac)];
+  let cards = [];
+  for (const e of all) {
+    if (settings.mode === 'char') {
+      // Show kana → answer romaji
+      if (settings.script === 'hira' || settings.script === 'both') cards.push({display:e.h, answer:e.r, entry:e});
+      if (settings.script === 'kata' || settings.script === 'both') cards.push({display:e.k, answer:e.r, entry:e});
+    } else {
+      // Show romaji → answer kana
+      if (settings.script === 'hira' || settings.script === 'both') cards.push({display:e.r, answer:e.h, entry:e});
+      if (settings.script === 'kata' || settings.script === 'both') cards.push({display:e.r, answer:e.k, entry:e});
+    }
+  }
+  // Deduplicate
+  const seen = new Set();
+  cards = cards.filter(c => { const k=c.display+'|'+c.answer; return seen.has(k)?false:(seen.add(k),true); });
+  // Shuffle
+  for (let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  return cards;
+}
+
+// ─── GRID BUILDER ───────────────────────────────────────
+function buildGrid() {
+  const { base, diac } = getRows();
+  const isRomajiAnswer = (settings.mode === 'char'); // answers shown are romaji
+  const showBothKana   = (settings.script === 'both' && !isRomajiAnswer); // two kana columns per slot
+
+  // Column headers
+  const vowels = ['a','i','u','e','o'];
+  const colCount = showBothKana ? 1 + vowels.length*2 : 1 + vowels.length;
+
+  let html = `<table class="gojiuon-table"><thead><tr>`;
+  html += `<th class="col-header"></th>`;
+  if (showBothKana) {
+    for (const v of vowels)
+      html += `<th class="col-header" colspan="2" style="font-size:0.6rem">${v}<br><span style="color:var(--muted);opacity:0.7">ひ・カ</span></th>`;
+  } else {
+    for (const v of vowels) html += `<th class="col-header">${v}</th>`;
+  }
+  html += `</tr></thead><tbody>`;
+
+  function renderRows(rows) {
+    for (const row of rows) {
+      html += `<tr><td class="row-header">${row.lbl}</td>`;
+      for (const entry of row.e) {
+        if (!entry) {
+          if (showBothKana) {
+            html += `<td style="padding:2px"><span class="ans-empty"></span></td><td style="padding:2px"><span class="ans-empty"></span></td>`;
+          } else {
+            html += `<td style="padding:2px"><span class="ans-empty"></span></td>`;
+          }
+        } else if (isRomajiAnswer) {
+          // One cell: romaji label
+          html += `<td style="padding:2px"><button class="ans-btn romaji-btn" data-value="${entry.r}">${entry.r}</button></td>`;
+        } else if (showBothKana) {
+          // Two cells: hiragana + katakana
+          html += `<td style="padding:2px"><button class="ans-btn" data-value="${entry.h}">${entry.h}</button></td>`;
+          html += `<td style="padding:2px"><button class="ans-btn" data-value="${entry.k}">${entry.k}</button></td>`;
+        } else {
+          // One kana cell (hira or kata depending on script setting)
+          const kana = (settings.script === 'kata') ? entry.k : entry.h;
+          html += `<td style="padding:2px"><button class="ans-btn" data-value="${kana}">${kana}</button></td>`;
+        }
+      }
+      html += `</tr>`;
+    }
+  }
+
+  renderRows(base);
+  if (diac.length > 0) {
+    html += `<tr class="diac-sep"><td colspan="${colCount}"><div class="diac-sep-line"></div></td></tr>`;
+    renderRows(diac);
+  }
+
+  html += `</tbody></table>`;
+  return html;
+}
+
+// ─── RENDER ─────────────────────────────────────────────
+function render() {
+  const stage = document.getElementById('stage');
+  if (queue.length === 0) {
+    stage.innerHTML = `<div class="empty">No characters match your settings.<br>Try adjusting the options above.</div>`;
+    return;
+  }
+  if (currentIdx >= queue.length) {
+    stage.innerHTML = `
+      <div class="complete-screen">
+        <div class="complete-emoji">🌸</div>
+        <div class="complete-title">All done!</div>
+        <div class="complete-sub">You went through all ${queue.length} characters!</div>
+        <button class="restart-btn" onclick="restart()">Play Again ✨</button>
+      </div>`;
+    return;
+  }
+
+  currentEntry = queue[currentIdx];
+  answered = false;
+  const isRomajiDisplay = (settings.mode === 'rom');
+  const pct = Math.round((currentIdx / queue.length) * 100);
+
+  stage.innerHTML = `
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="progress-label">${currentIdx} / ${queue.length}</div>
+    <div class="prompt-card">
+      <div class="prompt-label">${isRomajiDisplay ? 'Which kana is this?' : 'What sound is this?'}</div>
+      <div class="prompt-char pop-in${isRomajiDisplay?' is-romaji':''}" id="promptChar">${currentEntry.display}</div>
+    </div>
+    <div class="grid-wrap">${buildGrid()}</div>
+  `;
+
+  document.querySelectorAll('.ans-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleAnswer(btn.dataset.value, btn));
+  });
+}
+
+function handleAnswer(chosen, btn) {
+  if (answered) return;
+  if (chosen === currentEntry.answer) {
+    answered = true;
+    btn.classList.add('correct');
+    setTimeout(() => { currentIdx++; render(); }, 480);
+  } else {
+    const pc = document.getElementById('promptChar');
+    pc.classList.remove('shake'); void pc.offsetWidth; pc.classList.add('shake');
+    btn.classList.add('wrong');
+  }
+}
+
+function restart() { queue = buildQueue(); currentIdx = 0; render(); }
+
+// ─── SETTINGS PILLS ─────────────────────────────────────
+document.getElementById('scriptGroup').addEventListener('click', e => {
+  const btn = e.target.closest('[data-script]'); if (!btn) return;
+  settings.script = btn.dataset.script;
+  document.querySelectorAll('[data-script]').forEach(b =>
+    b.className = 'pill' + (b.dataset.script===settings.script ? ` active-${settings.script}` : ''));
+  restart();
+});
+document.getElementById('diacGroup').addEventListener('click', e => {
+  const btn = e.target.closest('[data-diac]'); if (!btn) return;
+  settings.diac = btn.dataset.diac;
+  const map={none:'nodiac',diac:'diac',all:'alldiac'};
+  document.querySelectorAll('[data-diac]').forEach(b =>
+    b.className = 'pill' + (b.dataset.diac===settings.diac ? ` active-${map[settings.diac]}` : ''));
+  restart();
+});
+document.getElementById('modeGroup').addEventListener('click', e => {
+  const btn = e.target.closest('[data-mode]'); if (!btn) return;
+  settings.mode = btn.dataset.mode;
+  document.querySelectorAll('[data-mode]').forEach(b =>
+    b.className = 'pill' + (b.dataset.mode===settings.mode ? ` active-${settings.mode}` : ''));
+  restart();
+});
+
+restart();
+</script>
+</body>
+</html>
