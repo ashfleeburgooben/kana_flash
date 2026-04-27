@@ -15,6 +15,8 @@
     --lavender:#c9b8f5;
     --sky:     #a8d8ea;
     --yellow:  #fff3b0;
+    --coral:   #ffcbb4;
+    --coral2:  #ff9a70;
     --bg:      #fff8f5;
     --text:    #3a2a3a;
     --muted:   #b09fb0;
@@ -37,115 +39,77 @@
     overflow-x: hidden;
   }
 
-  header {
-    width: 100%;
-    padding: 16px 20px 0;
-    display: flex;
-    justify-content: center;
-  }
+  header { width: 100%; padding: 16px 20px 0; display: flex; justify-content: center; }
   .title {
-    font-size: 1.6rem;
-    font-weight: 900;
+    font-size: 1.6rem; font-weight: 900;
     background: linear-gradient(135deg, #ff85a1, #b07fe0, #6fcf97);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
 
   /* ─── SETTINGS ─── */
   .settings {
-    width: 100%;
-    max-width: 720px;
+    width: 100%; max-width: 720px;
     padding: 12px 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
   }
+  .settings-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: stretch; }
   .pill-group { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
   .pill {
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 2.5px solid transparent;
-    background: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-    box-shadow: 0 2px 8px var(--shadow);
-    color: var(--text);
+    padding: 7px 14px; border-radius: 999px;
+    border: 2.5px solid transparent; background: white;
+    font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+    box-shadow: 0 2px 8px var(--shadow); color: var(--text);
   }
-  .pill:hover { transform: translateY(-1px); }
-  .pill.active-hira   { background: var(--pink);     border-color: var(--pink2); }
-  .pill.active-kata   { background: var(--lavender);  border-color: #a07fe0; }
-  .pill.active-both   { background: var(--peach);     border-color: #f0a060; }
-  .pill.active-nodiac { background: var(--mint);      border-color: var(--mint2); }
-  .pill.active-diac   { background: var(--sky);       border-color: #60afe0; }
-  .pill.active-alldiac{ background: var(--peach);     border-color: #f0a060; }
-  .pill.active-char   { background: var(--yellow);    border-color: #e0c040; }
-  .pill.active-rom    { background: var(--pink);      border-color: var(--pink2); }
-  .pill.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+  .pill:hover:not(.disabled) { transform: translateY(-1px); }
+  .pill.active-hira    { background: var(--pink);     border-color: var(--pink2); }
+  .pill.active-kata    { background: var(--lavender);  border-color: #a07fe0; }
+  .pill.active-both    { background: var(--peach);     border-color: #f0a060; }
+  .pill.active-base    { background: var(--mint);      border-color: var(--mint2); }
+  .pill.active-diac    { background: var(--sky);       border-color: #60afe0; }
+  .pill.active-sute    { background: var(--coral);     border-color: var(--coral2); }
+  .pill.active-all     { background: var(--peach);     border-color: #f0a060; }
+  .pill.active-char    { background: var(--yellow);    border-color: #e0c040; }
+  .pill.active-rom     { background: var(--pink);      border-color: var(--pink2); }
+  .pill.disabled       { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
   .divider { width: 2px; background: #e8d8e8; border-radius: 4px; align-self: stretch; margin: 0 2px; }
 
   /* ─── STAGE ─── */
   .stage {
-    flex: 1;
-    width: 100%;
-    max-width: 720px;
+    flex: 1; width: 100%; max-width: 720px;
     padding: 0 12px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
   }
 
   /* ─── PROMPT CARD ─── */
   .prompt-card {
-    width: 100%;
-    background: white;
-    border-radius: 28px;
-    box-shadow: 0 8px 32px var(--shadow);
-    padding: 22px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    position: relative;
-    overflow: hidden;
+    width: 100%; background: white; border-radius: 28px;
+    box-shadow: 0 8px 32px var(--shadow); padding: 22px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    position: relative; overflow: hidden;
   }
   .prompt-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 5px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
     background: linear-gradient(90deg, var(--pink), var(--lavender), var(--mint));
   }
-  .prompt-label {
-    font-size: 0.72rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
-  }
+  .prompt-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
   .prompt-char {
     font-family: 'Noto Sans JP', sans-serif;
-    font-size: clamp(3rem, 14vw, 6rem);
-    font-weight: 900; line-height: 1.1; color: var(--text);
+    font-size: clamp(3rem, 14vw, 6rem); font-weight: 900; line-height: 1.1; color: var(--text);
   }
   .prompt-char.is-romaji {
     font-family: 'Nunito', sans-serif;
-    font-size: clamp(2.2rem, 9vw, 4.5rem);
-    letter-spacing: -1px;
+    font-size: clamp(2.2rem, 9vw, 4.5rem); letter-spacing: -1px;
   }
 
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     15% { transform: translateX(-10px) rotate(-2deg); }
     30% { transform: translateX(10px) rotate(2deg); }
-    45% { transform: translateX(-8px); }
-    60% { transform: translateX(8px); }
-    75% { transform: translateX(-4px); }
-    90% { transform: translateX(4px); }
+    45% { transform: translateX(-8px); } 60% { transform: translateX(8px); }
+    75% { transform: translateX(-4px); } 90% { transform: translateX(4px); }
   }
   .shake { animation: shake 0.5s ease; }
-
   @keyframes popIn {
     0%  { opacity:0; transform: scale(0.7); }
     70% { transform: scale(1.08); }
@@ -153,73 +117,57 @@
   }
   .pop-in { animation: popIn 0.35s cubic-bezier(.34,1.56,.64,1) both; }
 
-  /* ─── GOJŪON GRID ─── */
+  /* ─── GRIDS ─── */
   .grid-wrap { width: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
   .gojiuon-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 4px;
+    width: 100%; border-collapse: separate; border-spacing: 4px;
   }
   .col-header { display: none; }
-  .col-header-UNUSED {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.65rem; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: var(--muted); text-align: center;
-    padding: 0 0 4px;
-  }
   .row-header { display: none; }
-  .row-header-UNUSED {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.6rem; font-weight: 800;
-    color: var(--muted); text-align: right;
-    padding-right: 3px; white-space: nowrap;
-    vertical-align: middle; width: 18px;
-  }
-  .diac-sep td { padding: 3px 0; }
-  .diac-sep-line {
+  .sep-row td { padding: 3px 0; }
+  .sep-line {
     height: 2px;
     background: linear-gradient(90deg, var(--pink), var(--lavender), var(--mint));
     border-radius: 99px; opacity: 0.5;
   }
 
+  /* Sutegana outer container: groups side by side */
+  .sute-outer { width: 100%; display: flex; flex-direction: row; gap: 12px; align-items: flex-start; }
+  .sute-col   { display: flex; flex-direction: column; gap: 4px; }
+  /* Group label */
+  .sute-group-label {
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted);
+    padding: 8px 2px 3px;
+    border-bottom: 1.5px solid #f0e0f0;
+    margin-bottom: 2px;
+  }
+  /* Each row: only as wide as its entries */
+  .sute-row {
+    display: flex; flex-wrap: nowrap; gap: 5px;
+  }
+  .sute-row .ans-btn {
+    flex: 0 0 auto;
+    width: 62px;
+  }
+
   .ans-btn {
-    width: 100%;
-    background: white;
-    border: 2.5px solid #f0e0f0;
-    border-radius: 11px;
+    width: 100%; background: white;
+    border: 2.5px solid #f0e0f0; border-radius: 11px;
     padding: 5px 1px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 1rem; font-weight: 700;
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-    box-shadow: 0 2px 7px var(--shadow);
-    min-height: 46px;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 1rem; font-weight: 700;
+    color: var(--text); cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 2px 7px var(--shadow); min-height: 46px;
     display: block; text-align: center; line-height: 1.2;
   }
-  .ans-btn.romaji-btn {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.72rem;
-  }
+  .ans-btn.combo-btn { font-size: 0.78rem; min-height: 46px; }
+  .ans-btn.romaji-btn { font-family: 'Nunito', sans-serif; font-size: 0.72rem; }
   .ans-btn:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 5px 14px var(--shadow); border-color: var(--pink2); }
   .ans-btn:active:not([disabled]) { transform: scale(0.93); }
-  .ans-btn.correct {
-    background: var(--mint); border-color: var(--mint2);
-    transform: scale(1.08);
-    box-shadow: 0 6px 20px rgba(111,207,151,0.4);
-  }
-  .ans-btn.wrong {
-    background: #ffe0e8; border-color: #ff85a1;
-    opacity: 0.38; pointer-events: none;
-  }
-  .ans-empty {
-    display: block; width: 100%; min-height: 44px;
-    background: transparent;
-    border: 2px dashed #ecdcec;
-    border-radius: 11px;
-  }
+  .ans-btn.correct { background: var(--mint); border-color: var(--mint2); transform: scale(1.08); box-shadow: 0 6px 20px rgba(111,207,151,0.4); }
+  .ans-btn.wrong   { background: #ffe0e8; border-color: #ff85a1; opacity: 0.38; pointer-events: none; }
+  .ans-empty { display: block; width: 100%; min-height: 44px; background: transparent; border: 2px dashed #ecdcec; border-radius: 11px; }
 
   /* ─── PROGRESS ─── */
   .progress-bar-wrap { width: 100%; height: 8px; background: #f0e0f0; border-radius: 99px; overflow: hidden; }
@@ -232,14 +180,10 @@
   .complete-title { font-size: 1.8rem; font-weight: 900; }
   .complete-sub   { color: var(--muted); font-weight: 600; }
   .restart-btn {
-    margin-top:12px; padding:14px 36px;
-    border-radius:999px; border:none;
+    margin-top:12px; padding:14px 36px; border-radius:999px; border:none;
     background: linear-gradient(135deg, var(--pink2), var(--lavender));
-    color:white; font-family:'Nunito',sans-serif;
-    font-size:1.05rem; font-weight:800;
-    cursor:pointer;
-    box-shadow:0 4px 16px rgba(180,130,200,0.35);
-    transition:all 0.18s;
+    color:white; font-family:'Nunito',sans-serif; font-size:1.05rem; font-weight:800;
+    cursor:pointer; box-shadow:0 4px 16px rgba(180,130,200,0.35); transition:all 0.18s;
   }
   .restart-btn:hover { transform:translateY(-2px); }
   .empty { text-align:center; color:var(--muted); padding:40px 20px; font-size:1rem; font-weight:600; }
@@ -250,21 +194,25 @@
 <header><div class="title">かな Flash ✨</div></header>
 
 <div class="settings">
-  <div class="pill-group" id="scriptGroup">
-    <button class="pill active-hira" data-script="hira">ひ Hiragana</button>
-    <button class="pill" data-script="kata">カ Katakana</button>
-    <button class="pill" data-script="both">Both</button>
+  <div class="settings-row">
+    <div class="pill-group" id="scriptGroup">
+      <button class="pill active-hira" data-script="hira">ひ Hiragana</button>
+      <button class="pill" data-script="kata">カ Katakana</button>
+      <button class="pill" data-script="both">Both</button>
+    </div>
+    <div class="divider"></div>
+    <div class="pill-group" id="modeGroup">
+      <button class="pill active-char" data-mode="char">Show kana</button>
+      <button class="pill" data-mode="rom">Show romaji</button>
+    </div>
   </div>
-  <div class="divider"></div>
-  <div class="pill-group" id="diacGroup">
-    <button class="pill active-nodiac" data-diac="none">No diacritics</button>
-    <button class="pill" data-diac="diac">With diacritics</button>
-    <button class="pill" data-diac="all">All</button>
-  </div>
-  <div class="divider"></div>
-  <div class="pill-group" id="modeGroup">
-    <button class="pill active-char" data-mode="char">Show kana</button>
-    <button class="pill" data-mode="rom">Show romaji</button>
+  <div class="settings-row">
+    <div class="pill-group" id="setGroup">
+      <button class="pill active-base" data-set="base">Base kana</button>
+      <button class="pill" data-set="diac">Diacritics</button>
+      <button class="pill" data-set="sute">Sutegana</button>
+      <button class="pill" data-set="all">All</button>
+    </div>
   </div>
 </div>
 
@@ -272,7 +220,6 @@
 
 <script>
 // ─── GOJŪON DATA ────────────────────────────────────────
-// 5 slots per row: [a, i, u, e, o]. null = vacant position.
 const GOJIUON_BASE = [
   {lbl:'—', e:[{h:'あ',k:'ア',r:'a'},{h:'い',k:'イ',r:'i'},{h:'う',k:'ウ',r:'u'},{h:'え',k:'エ',r:'e'},{h:'お',k:'オ',r:'o'}]},
   {lbl:'k',  e:[{h:'か',k:'カ',r:'ka'},{h:'き',k:'キ',r:'ki'},{h:'く',k:'ク',r:'ku'},{h:'け',k:'ケ',r:'ke'},{h:'こ',k:'コ',r:'ko'}]},
@@ -294,95 +241,211 @@ const GOJIUON_DIAC = [
   {lbl:'p', e:[{h:'ぱ',k:'パ',r:'pa'},{h:'ぴ',k:'ピ',r:'pi'},{h:'ぷ',k:'プ',r:'pu'},{h:'ぺ',k:'ペ',r:'pe'},{h:'ぽ',k:'ポ',r:'po'}]},
 ];
 
+// ─── SUTEGANA DATA ───────────────────────────────────────
+// Youon groups: each group has a label and rows of entries.
+// h = hiragana, k = katakana, r = romaji. kOnly:true = katakana only.
+// Each group renders as its own labeled section; each row renders on one line.
+const SUTE_GROUPS = [
+  { label:'i-row + ya/yu/yo', rows:[
+    [{h:'きゃ',k:'キャ',r:'kya'},{h:'きゅ',k:'キュ',r:'kyu'},{h:'きょ',k:'キョ',r:'kyo'}],
+    [{h:'ぎゃ',k:'ギャ',r:'gya'},{h:'ぎゅ',k:'ギュ',r:'gyu'},{h:'ぎょ',k:'ギョ',r:'gyo'}],
+    [{h:'しゃ',k:'シャ',r:'sha'},{h:'しゅ',k:'シュ',r:'shu'},{h:'しょ',k:'ショ',r:'sho'}],
+    [{h:'じゃ',k:'ジャ',r:'ja'}, {h:'じゅ',k:'ジュ',r:'ju'}, {h:'じょ',k:'ジョ',r:'jo'}],
+    [{h:'ちゃ',k:'チャ',r:'cha'},{h:'ちゅ',k:'チュ',r:'chu'},{h:'ちょ',k:'チョ',r:'cho'}],
+    [{h:'ぢゃ',k:'ヂャ',r:'dya'},{h:'ぢゅ',k:'ヂュ',r:'dyu'},{h:'ぢょ',k:'ヂョ',r:'dyo'}],
+    [{h:'にゃ',k:'ニャ',r:'nya'},{h:'にゅ',k:'ニュ',r:'nyu'},{h:'にょ',k:'ニョ',r:'nyo'}],
+    [{h:'ひゃ',k:'ヒャ',r:'hya'},{h:'ひゅ',k:'ヒュ',r:'hyu'},{h:'ひょ',k:'ヒョ',r:'hyo'}],
+    [{h:'びゃ',k:'ビャ',r:'bya'},{h:'びゅ',k:'ビュ',r:'byu'},{h:'びょ',k:'ビョ',r:'byo'}],
+    [{h:'ぴゃ',k:'ピャ',r:'pya'},{h:'ぴゅ',k:'ピュ',r:'pyu'},{h:'ぴょ',k:'ピョ',r:'pyo'}],
+    [{h:'みゃ',k:'ミャ',r:'mya'},{h:'みゅ',k:'ミュ',r:'myu'},{h:'みょ',k:'ミョ',r:'myo'}],
+    [{h:'りゃ',k:'リャ',r:'rya'},{h:'りゅ',k:'リュ',r:'ryu'},{h:'りょ',k:'リョ',r:'ryo'}],
+  ]},
+  { label:'extra combinations (katakana only)', rows:[
+    [{k:'ヴァ',r:'va',kOnly:true},{k:'ヴィ',r:'vi',kOnly:true},{k:'ヴ',r:'vu',kOnly:true},{k:'ヴェ',r:'ve',kOnly:true},{k:'ヴォ',r:'vo',kOnly:true}],
+    [{k:'ウィ',r:'wi',kOnly:true},{k:'ウェ',r:'we',kOnly:true},{k:'ウォ',r:'wo',kOnly:true}],
+    [{k:'ファ',r:'fa',kOnly:true},{k:'フィ',r:'fi',kOnly:true},{k:'フェ',r:'fe',kOnly:true},{k:'フォ',r:'fo',kOnly:true}],
+    [{k:'ツァ',r:'tsa',kOnly:true},{k:'ツィ',r:'tsi',kOnly:true},{k:'ツェ',r:'tse',kOnly:true},{k:'ツォ',r:'tso',kOnly:true}],
+    [{k:'シェ',r:'she',kOnly:true},{k:'ジェ',r:'je',kOnly:true},{k:'チェ',r:'che',kOnly:true},{k:'ティ',r:'ti',kOnly:true},{k:'トゥ',r:'twu',kOnly:true},{k:'ディ',r:'di',kOnly:true},{k:'ドゥ',r:'dwu',kOnly:true}],
+  ]},
+];
+
+// Flat list of all sute entries visible given current script setting
+function getSuteEntries() {
+  const scriptShowsKata = (settings.script === 'kata' || settings.script === 'both');
+  return SUTE_GROUPS.flatMap(g =>
+    g.rows.flatMap(row => row.filter(e => !e.kOnly || scriptShowsKata))
+  );
+}
+
 function flatEntries(rows) { return rows.flatMap(r => r.e.filter(Boolean)); }
 
 // ─── STATE ──────────────────────────────────────────────
-let settings = { script:'hira', diac:'none', mode:'char' };
+// set: 'base' | 'diac' | 'sute' | 'all'
+let settings = { script:'hira', set:'base', mode:'char' };
 let queue = [], currentIdx = 0, currentEntry = null, answered = false;
 
-function getRows() {
-  if (settings.diac === 'none') return { base: GOJIUON_BASE, diac: [] };
-  if (settings.diac === 'diac') return { base: [], diac: GOJIUON_DIAC };
-  return { base: GOJIUON_BASE, diac: GOJIUON_DIAC };
+function getActiveEntries() {
+  let entries = [];
+  const s = settings.set;
+  if (s === 'base' || s === 'all') entries.push(...flatEntries(GOJIUON_BASE));
+  if (s === 'diac' || s === 'all') entries.push(...flatEntries(GOJIUON_DIAC));
+  if (s === 'sute' || s === 'all') entries.push(...getSuteEntries());
+  return entries;
 }
 
 function buildQueue() {
-  const { base, diac } = getRows();
-  const all = [...flatEntries(base), ...flatEntries(diac)];
+  const all = getActiveEntries();
   let cards = [];
   for (const e of all) {
+    const hasHira = !e.kOnly; // kOnly entries have no hiragana
     if (settings.mode === 'char') {
-      // Show kana → answer romaji
-      if (settings.script === 'hira' || settings.script === 'both') cards.push({display:e.h, answer:e.r, entry:e});
+      if (hasHira && (settings.script === 'hira' || settings.script === 'both')) cards.push({display:e.h, answer:e.r, entry:e});
       if (settings.script === 'kata' || settings.script === 'both') cards.push({display:e.k, answer:e.r, entry:e});
     } else {
-      // Show romaji → answer kana
-      if (settings.script === 'hira' || settings.script === 'both') cards.push({display:e.r, answer:e.h, entry:e});
+      if (hasHira && (settings.script === 'hira' || settings.script === 'both')) cards.push({display:e.r, answer:e.h, entry:e});
       if (settings.script === 'kata' || settings.script === 'both') cards.push({display:e.r, answer:e.k, entry:e});
     }
   }
-  // Deduplicate
   const seen = new Set();
   cards = cards.filter(c => { const k=c.display+'|'+c.answer; return seen.has(k)?false:(seen.add(k),true); });
-  // Shuffle
   for (let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
   return cards;
 }
 
-// ─── GRID BUILDER ───────────────────────────────────────
-function buildGrid() {
-  const { base, diac } = getRows();
-  const isRomajiAnswer = (settings.mode === 'char'); // answers shown are romaji
-  const showBothKana   = (settings.script === 'both' && !isRomajiAnswer); // two kana columns per slot
+// ─── GRID BUILDERS ──────────────────────────────────────
+function makeBtn(value, label, isRomaji, isCombo) {
+  let cls = 'ans-btn';
+  if (isRomaji) cls += ' romaji-btn';
+  if (isCombo)  cls += ' combo-btn';
+  return `<button class="${cls}" data-value="${value}">${label}</button>`;
+}
 
-  // Column headers
-  const vowels = ['a','i','u','e','o'];
-  const colCount = showBothKana ? 1 + vowels.length*2 : 1 + vowels.length;
-
-  let html = `<table class="gojiuon-table"><thead><tr>`;
-  html += `<th class="col-header"></th>`;
-  if (showBothKana) {
-    for (const v of vowels)
-      html += `<th class="col-header" colspan="2" style="font-size:0.6rem">${v}<br><span style="color:var(--muted);opacity:0.7">ひ・カ</span></th>`;
-  } else {
-    for (const v of vowels) html += `<th class="col-header">${v}</th>`;
-  }
-  html += `</tr></thead><tbody>`;
-
-  function renderRows(rows) {
-    for (const row of rows) {
-      html += `<tr><td class="row-header">${row.lbl}</td>`;
-      for (const entry of row.e) {
-        if (!entry) {
-          if (showBothKana) {
-            html += `<td style="padding:2px"><span class="ans-empty"></span></td><td style="padding:2px"><span class="ans-empty"></span></td>`;
-          } else {
-            html += `<td style="padding:2px"><span class="ans-empty"></span></td>`;
-          }
-        } else if (isRomajiAnswer) {
-          // One cell: romaji label
-          html += `<td style="padding:2px"><button class="ans-btn romaji-btn" data-value="${entry.r}">${entry.r}</button></td>`;
-        } else if (showBothKana) {
-          // Two cells: hiragana + katakana
-          html += `<td style="padding:2px"><button class="ans-btn" data-value="${entry.h}">${entry.h}</button></td>`;
-          html += `<td style="padding:2px"><button class="ans-btn" data-value="${entry.k}">${entry.k}</button></td>`;
-        } else {
-          // One kana cell (hira or kata depending on script setting)
-          const kana = (settings.script === 'kata') ? entry.k : entry.h;
-          html += `<td style="padding:2px"><button class="ans-btn" data-value="${kana}">${kana}</button></td>`;
-        }
+// Standard gojūon table (5-column grid)
+function buildGojuonSection(rows, colCount) {
+  let html = '';
+  for (const row of rows) {
+    html += `<tr><td class="row-header">${row.lbl}</td>`;
+    for (const entry of row.e) {
+      if (!entry) {
+        html += `<td style="padding:2px"><span class="ans-empty"></span></td>`;
+      } else {
+        const isRomaji = (settings.mode === 'char');
+        const val   = isRomaji ? entry.r : (settings.script==='kata' ? entry.k : entry.h);
+        const label = val;
+        html += `<td style="padding:2px">${makeBtn(val, label, isRomaji, false)}</td>`;
       }
-      html += `</tr>`;
+    }
+    html += `</tr>`;
+  }
+  return html;
+}
+
+// Sutegana grid: two groups side by side
+function buildSuteGrid() {
+  const isRomaji = (settings.mode === 'char');
+  const scriptShowsKata = (settings.script === 'kata' || settings.script === 'both');
+
+  function entryVal(e) {
+    if (isRomaji) return e.r;
+    if (e.kOnly)  return e.k;
+    return settings.script === 'kata' ? e.k : e.h;
+  }
+
+  function renderGroup(group) {
+    const hasVisible = group.rows.some(row => row.some(e => !e.kOnly || scriptShowsKata));
+    if (!hasVisible) return '';
+    let h = '<div class="sute-col">';
+    h += '<div class="sute-group-label">' + group.label + '</div>';
+    for (const row of group.rows) {
+      const visible = row.filter(e => !e.kOnly || scriptShowsKata);
+      if (!visible.length) continue;
+      h += '<div class="sute-row">';
+      for (const e of visible) {
+        const val = entryVal(e);
+        h += makeBtn(val, val, isRomaji, !isRomaji && val.length > 1);
+      }
+      h += '</div>';
+    }
+    h += '</div>';
+    return h;
+  }
+
+  let html = '<div class="sute-outer">';
+  for (const group of SUTE_GROUPS) {
+    html += renderGroup(group);
+  }
+  html += '</div>';
+  return html;
+}
+
+function buildGrid() {
+  const s = settings.set;
+  const isRomaji = (settings.mode === 'char');
+  const showBothKana = (settings.script === 'both' && !isRomaji);
+
+  // Which gojūon rows to include
+  const baseRows = (s === 'base' || s === 'all') ? GOJIUON_BASE : [];
+  const diacRows = (s === 'diac' || s === 'all') ? GOJIUON_DIAC : [];
+  const hasSute  = (s === 'sute' || s === 'all');
+  const hasGojuon = baseRows.length > 0 || diacRows.length > 0;
+
+  let html = '<div class="grid-wrap">';
+
+  // ── Gojūon table (when base or diac or all) ──
+  if (hasGojuon) {
+    const colCount = showBothKana ? 1 + 5*2 : 1 + 5;
+    html += `<table class="gojiuon-table"><thead><tr>`;
+    html += `<th class="col-header"></th>`;
+    if (showBothKana) {
+      for (let i=0;i<5;i++) html += `<th class="col-header" colspan="2"></th>`;
+    } else {
+      for (let i=0;i<5;i++) html += `<th class="col-header"></th>`;
+    }
+    html += `</tr></thead><tbody>`;
+
+    function renderGojuonRows(rows) {
+      for (const row of rows) {
+        html += `<tr><td class="row-header">${row.lbl}</td>`;
+        for (const entry of row.e) {
+          if (!entry) {
+            if (showBothKana) {
+              html += `<td style="padding:2px"><span class="ans-empty"></span></td><td style="padding:2px"><span class="ans-empty"></span></td>`;
+            } else {
+              html += `<td style="padding:2px"><span class="ans-empty"></span></td>`;
+            }
+          } else if (isRomaji) {
+            html += `<td style="padding:2px">${makeBtn(entry.r, entry.r, true, false)}</td>`;
+          } else if (showBothKana) {
+            html += `<td style="padding:2px">${makeBtn(entry.h, entry.h, false, false)}</td>`;
+            html += `<td style="padding:2px">${makeBtn(entry.k, entry.k, false, false)}</td>`;
+          } else {
+            const kana = settings.script==='kata' ? entry.k : entry.h;
+            html += `<td style="padding:2px">${makeBtn(kana, kana, false, false)}</td>`;
+          }
+        }
+        html += `</tr>`;
+      }
+    }
+
+    renderGojuonRows(baseRows);
+    if (diacRows.length > 0) {
+      html += `<tr class="sep-row"><td colspan="${colCount}"><div class="sep-line"></div></td></tr>`;
+      renderGojuonRows(diacRows);
+    }
+    html += `</tbody></table>`;
+
+    // Separator between gojūon and sutegana sections
+    if (hasSute) {
+      html += `<div style="height:8px"></div><div class="sep-line" style="margin:4px 0"></div><div style="height:4px"></div>`;
     }
   }
 
-  renderRows(base);
-  if (diac.length > 0) {
-    html += `<tr class="diac-sep"><td colspan="${colCount}"><div class="diac-sep-line"></div></td></tr>`;
-    renderRows(diac);
+  // ── Sutegana section ──
+  if (hasSute) {
+    html += buildSuteGrid();
   }
 
-  html += `</tbody></table>`;
+  html += '</div>';
   return html;
 }
 
@@ -416,7 +479,7 @@ function render() {
       <div class="prompt-label">${isRomajiDisplay ? 'Which kana is this?' : 'What sound is this?'}</div>
       <div class="prompt-char pop-in${isRomajiDisplay?' is-romaji':''}" id="promptChar">${currentEntry.display}</div>
     </div>
-    <div class="grid-wrap">${buildGrid()}</div>
+    ${buildGrid()}
   `;
 
   document.querySelectorAll('.ans-btn').forEach(btn => {
@@ -440,22 +503,6 @@ function handleAnswer(chosen, btn) {
 function restart() { queue = buildQueue(); currentIdx = 0; render(); }
 
 // ─── SETTINGS PILLS ─────────────────────────────────────
-document.getElementById('scriptGroup').addEventListener('click', e => {
-  const btn = e.target.closest('[data-script]'); if (!btn || btn.classList.contains('disabled')) return;
-  settings.script = btn.dataset.script;
-  document.querySelectorAll('[data-script]').forEach(b =>
-    b.className = 'pill' + (b.dataset.script===settings.script ? ` active-${settings.script}` : ''));
-  updateBothPill();
-  restart();
-});
-document.getElementById('diacGroup').addEventListener('click', e => {
-  const btn = e.target.closest('[data-diac]'); if (!btn) return;
-  settings.diac = btn.dataset.diac;
-  const map={none:'nodiac',diac:'diac',all:'alldiac'};
-  document.querySelectorAll('[data-diac]').forEach(b =>
-    b.className = 'pill' + (b.dataset.diac===settings.diac ? ` active-${map[settings.diac]}` : ''));
-  restart();
-});
 function updateBothPill() {
   const bothBtn = document.querySelector('[data-script="both"]');
   if (settings.mode === 'rom') {
@@ -470,8 +517,29 @@ function updateBothPill() {
     bothBtn.classList.remove('disabled');
   }
 }
+
+document.getElementById('scriptGroup').addEventListener('click', e => {
+  const btn = e.target.closest('[data-script]');
+  if (!btn || btn.classList.contains('disabled')) return;
+  settings.script = btn.dataset.script;
+  document.querySelectorAll('[data-script]').forEach(b =>
+    b.className = 'pill' + (b.dataset.script===settings.script ? ` active-${settings.script}` : ''));
+  updateBothPill();
+  restart();
+});
+
+document.getElementById('setGroup').addEventListener('click', e => {
+  const btn = e.target.closest('[data-set]');
+  if (!btn) return;
+  settings.set = btn.dataset.set;
+  document.querySelectorAll('[data-set]').forEach(b =>
+    b.className = 'pill' + (b.dataset.set===settings.set ? ` active-${settings.set}` : ''));
+  restart();
+});
+
 document.getElementById('modeGroup').addEventListener('click', e => {
-  const btn = e.target.closest('[data-mode]'); if (!btn) return;
+  const btn = e.target.closest('[data-mode]');
+  if (!btn) return;
   settings.mode = btn.dataset.mode;
   updateBothPill();
   document.querySelectorAll('[data-mode]').forEach(b =>
